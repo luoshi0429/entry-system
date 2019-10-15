@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "人员报备",
+  "usingComponents": {
+    "select": "/components/select/select",
+    "date-picker": "/components/date-picker/date-picker"
+  }
+}

@@ -1,0 +1,17 @@
+<!--components/date-picker/date-picker.wxml-->
+<view class="c-date-picker">
+  <view class="c-date-picker-content">
+    <view class="c-date-picker-header">
+      <text class="cancel" bindtap="tapCancel">取消</text>
+      <text class="confirm" bindtap="tapConfirm">确定</text>
+    </view>
+    <picker-view class="c-date-picker-view" indicator-class="c-date-picker-indicator" value="{{value}}" bindchange="bindChange">
+      <picker-view-column>
+        <view wx:for="{{ymds}}" wx:key="{{index}}" class="c-date-picker-text">{{item}}</view>
+      </picker-view-column>
+      <picker-view-column>
+        <view wx:for="{{hms}}" wx:key="{{index}}" class="c-date-picker-text">{{item}}</view>
+      </picker-view-column>
+    </picker-view>
+  </view>
+</view>
