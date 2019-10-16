@@ -1,22 +1,12 @@
 // components/date-picker/date-picker.js
 
-// const now = new Date();
-// const year = now.getFullYear();
-// const month = now.getMonth() + 1;
-// const day = now.getDate();
-// const hour = now.getHours();
-// const minite = now.getMinutes();
-
 // 限制在往后1年
 const limitMonth = 12;
-// 一个月30天
-const m30 = [4, 6, 9, 11];
-// 一个月31天
-const m31 = [1, 3, 5, 7, 8, 10, 12];
 
 const ymds = [];
 const limitDays = 365;
-const nowTime = Date.now();
+const now = new Date();
+const nowTime = now.getTime();
 for (let i = 0; i <= 365; i++) {
   const next = new Date(nowTime + 1000*60*60*24*i);
   const year = next.getFullYear();
@@ -32,7 +22,7 @@ for (let i = 0; i < 24; i++) {
   hms.push(`${appendZero(i)}:30`);
 }
 
-console.log(ymds, hms);
+// console.log(ymds, hms);
 
 // 是否为闰年
 function isLeapYear(year) {
@@ -49,8 +39,13 @@ function getDaysOfMonth(y, m) {
 }
 
 function appendZero(num) {
-  return num >= 10 ? num : '0' + num;
+  return num >= 10 ? num : ('0' + num);
 }
+
+const hour = now.getHours();
+const minute = now.getMinutes();
+const index = hour * 2 + (minute >= 30 ? 2 : 1);
+const firstHm = hms.slice(index);
 
 Component({
   /**
@@ -68,7 +63,7 @@ Component({
     ymds: ymds,
     // 时分
     hms: hms,
-    current: {}
+    value: [0, 0]
   },
 
   attached: function () { }, // 此处attached的声明会被lifetimes字段中的声明覆盖
@@ -103,9 +98,34 @@ Component({
     },
     // 点击确认
     tapConfirm() {
-      this.triggerEvent('confirm');
+      // 判断是否在现在之前
+      const ymd = this.data.value[0];
+      let hm = this.data.value[1];
+      const timeStr = `${this.data.ymds[ymd]} ${this.data.hms[hm]}`;
+      // TODO: 分钟数 00:00 -> 不能补零。 否则报错
+      const selectedDate = new Date(timeStr).getTime();
+      if (selectedDate <= Date.now()) {
+        wx.showToast({
+          title: '不能早于现在',
+          icon: 'none',
+          duration: 1500
+        });
+        return;
+      }
+      console.log(selectedDate);
+      this.triggerEvent('confirm', timeStr);
     },
     bindChange(e) {
+      const val = e.detail.value;
+      const ymd = val[0];
+      let hm = val[1];
+      const currentYmd = this.data.value[0];
+      if (ymd !== currentYmd) {
+        hm = 0;
+      }
+      this.setData({
+        value: [ymd, hm]
+      });
       console.log(e);
     }
   }

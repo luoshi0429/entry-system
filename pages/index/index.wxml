@@ -4,43 +4,55 @@
   <view class="form">
     <view class="form-control">
       <view class="title">报备项目<text>*</text>：</view>
-      <select title="请选择报备项目" options="{{ [1, 2, 3] }}"></select>
+      <select title="请选择报备项目" prop="ProName" options="{{ baobeiList }}" bindchange="handleBaobeiChanged"></select>
     </view>
     <view class="form-control">
       <view class="title">用户手机号码1<text>*</text>（必填）：</view>
       <view class="two-input-row">
-        <input type="number" placeholder="请输入手机号码前3位" />
-        <input type="number" placeholder="请输入手机号码后4位" />
+        <input bindinput="handleInput" value="{{ Tel1Prefix3 }}" id="Tel1Prefix3" type="number" placeholder="请输入手机号码前3位" maxlength="3" />
+        <input bindinput="handleInput" value="{{ Tel1Suffix4 }}" id="Tel1Suffix4" type="number" placeholder="请输入手机号码后4位" maxlength="4" />
       </view>
     </view>
     <view class="form-control">
       <view class="title">用户手机号码2（选填）：</view>
       <view class="two-input-row">
-        <input type="number" placeholder="请输入手机号码前3位" />
-        <input type="number" placeholder="请输入手机号码后4位" />
+        <input bindinput="handleInput" value="{{ Tel2Prefix3 }}" id="Tel2Prefix3" type="number" placeholder="请输入手机号码前3位" maxlength="3" />
+        <input bindinput="handleInput" value="{{ Tel2Suffix4 }}" id="Tel2Suffix4" type="number" placeholder="请输入手机号码后4位" maxlength="4" />
       </view>
     </view>
     <view class="form-control">
       <view class="title">用户姓名<text>*</text>：</view>
-      <input class="input-row" placeholder="请输入用户名" />
+      <input bindinput="handleInput" value="{{ UName }}" id="UName" class="input-row" placeholder="请输入用户名" />
     </view>
     <view class="form-control">
       <view class="title">预计到访时间<text>*</text>：</view>
-      <!-- <input class="input-row" placeholder="请输入用户名" /> -->
-      <view class="input-row visit-time-row" bindtap="tapShowVisitTime">请选择到访时间<image src="../../images/select.png" /></view>
+      <view class="input-row visit-time-row" bindtap="tapShowVisitTime">
+        <text wx:if="{{ !ArrivalTime }}">请选择到访时间</text><text class="visit-selected-time" wx:else>{{ ArrivalTime }}</text><image src="../../images/select.png" />
+      </view>
       <date-picker wx:if="{{showDatePicker}}" bind:cancel="handleCancelDatePicker" bind:confirm="handlePickDate" />
     </view>
     <view class="form-control">
       <view class="title">请选择渠道公司<text>*</text>：
-      <view bindtap="tapAllMarketingRadio" class="c-radio {{ allMarketing ? 'selected' : '' }}"><image src="../../images/selected.png" /><text class="c-radio-circle"></text>全名营销</view></view>
-      <select title="请选择报备项目后再选择渠道"></select>
+        <view wx:if="{{ selectedBaobei.IsMarketing }}" bindtap="tapAllMarketingRadio" class="c-radio {{ allMarketing ? 'selected' : '' }}">
+          <image src="../../images/selected.png" /><text class="c-radio-circle"></text>全民营销
+        </view>
+      </view>
+      <select title="请选择报备项目后再选择渠道" prop="QuDaoName" options="{{ qudaoList }}" bindchange="handleQudaoChanged"></select>
     </view>
     <view class="form-control">
       <view class="title">报备人员手机号码<text>*</text>：</view>
-      <input class="input-row" placeholder="请输入报备人员手机号" />
+      <input bindinput="handleInput" value="{{ BaoBeiTel }}" id="BaoBeiTel" class="input-row" placeholder="请输入报备人员手机号" />
+    </view>
+    <view class="form-control" wx:if="{{ allMarketing }}">
+      <view class="title">报备人员姓名<text>*</text>：</view>
+      <input bindinput="handleInput" value="{{ SName }}" id="SName" class="input-row" placeholder="请输入报备人员姓名" />
+    </view>
+    <view class="form-control" wx:if="{{ allMarketing }}">
+      <view class="title">报备人员身份证号码<text>*</text>：</view>
+      <input bindinput="handleInput" value="{{ BaoBeiIdCardNum }}" id="BaoBeiIdCardNum" class="input-row" placeholder="请输入报备人员身份证号码" />
     </view>
     <view class="form-control"></view>
-    <view class="tip"><text>说明：</text>报备生效时间为2小时，请提前报备！报备后有效时间为30天</view>
+    <view class="tip"><text>说明：</text>报备生效时间为{{ selectedBaobei.Interval || 2 }}小时，请提前报备！报备后有效时间为30天</view>
     <view class="btn submit-btn" bindtap="tapSubmit"><image src="../../images/button.png" /><text>提交</text></view>
     <view class="btn reset-btn" bindtap="tapReset">重制</view>
   </view>

@@ -10,9 +10,13 @@
   border: 1px solid #333;
   box-sizing: border-box;
   color: #999;
-  height: 42rpx;
-  line-height: 42rpx;
+  height: 52rpx;
+  line-height: 52rpx;
   position: relative;
+}
+
+.c-selected-title {
+  color: #333;
 }
 
 .c-select-title image {
@@ -20,24 +24,29 @@
   width: 30rpx;
   height: 30rpx;
   right: 40rpx;
-  top: 6rpx;
+  top: 11rpx;
 }
 
 .c-select-panel {
   position: absolute;
   z-index: 66;
+  box-sizing: border-box;
   left: 0;
   right: 0;
-  height: 200rpx;
+  max-height: 200rpx;
+  overflow: auto;
   background: #fff;
-  border-bottom-left-radius: 4rpx;
-  border-bottom-right-radius: 4rpx;
-  /* border: 1px solid #bbb;
-  border-top: none; */
+  border: 1px solid #333;
+  border-top: none;
 }
 
 .c-select-row {
-  line-height: 54rpx;
-  margin: 0 8rpx;
-  /* border-bottom: 1px solid #aaa; */
+  height: 52rpx;
+  line-height: 52rpx;
+  border-bottom: 1px solid #333;
+  padding-left: 8rpx;
+  font-size: 24rpx;
+}
+.c-select-row:last-of-type {
+  border-bottom: none;
 }

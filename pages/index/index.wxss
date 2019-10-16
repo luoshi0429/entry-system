@@ -1,11 +1,13 @@
 page {
-  height: 100%;
+  min-height: 100%;
   font-family: SourceHanSansCN-Regular, "PingFang SC", "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Helvetica, Arial, Verdana, sans-serif;
+  position: relative;
 }
 .container {
-  position: relative;
-  padding-top: 30rpx;
-  box-sizing: border-box;
+  /* padding-top: 30rpx; */
+  padding: 30rpx 40rpx 30rpx;
+  /* box-sizing: border-box;
+  height: 100%; */
 }
 
 .container-bg {
@@ -20,7 +22,7 @@ page {
 .form {
   position: relative;
   z-index: 1;
-  margin: 0 40rpx 30rpx;
+  /* margin: 0 40rpx 30rpx; */
   padding: 30rpx 60rpx;
   background: #fff;
   border-radius: 8px;
@@ -54,9 +56,10 @@ page {
 .two-input-row input {
   flex: 1;
   font-size: 24rpx;
-  height: 40rpx;
+  height: 52rpx;
   padding: 0 8rpx;
-  border: 1px solid #999;
+  border: 1px solid #333;
+  box-sizing: border-box;
 }
 .two-input-row input:first-of-type {
   margin-right: 16rpx;
@@ -65,8 +68,8 @@ page {
 .input-row {
   width: 100%;
   font-size: 24rpx;
-  height: 40rpx;
-  line-height: 40rpx;
+  height: 52rpx;
+  line-height: 52rpx;
   padding: 0 8rpx;
   border: 1px solid #333;
   box-sizing: border-box;
@@ -82,7 +85,9 @@ page {
 }
 
 .tip {
-  margin-bottom: 60rpx;
+  margin-bottom: 50rpx;
+  font-size: 26rpx;
+  color: #333;
 }
 
 .tip text {
@@ -116,8 +121,8 @@ page {
 
 .visit-time-row {
   color: #999;
-  height: 42rpx;
-  line-height: 42rpx;
+  height: 54rpx;
+  line-height: 54rpx;
   position: relative;
 }
 
@@ -126,7 +131,11 @@ page {
   width: 30rpx;
   height: 30rpx;
   right: 40rpx;
-  top: 6rpx;
+  top: 11rpx;
+}
+
+.visit-selected-time {
+  color: #333;
 }
 
 .c-radio {

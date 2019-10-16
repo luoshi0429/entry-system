@@ -1,12 +1,18 @@
 <!--select.wxml-->
 <view class="c-select">
-  <view bindtap="tapShowSelect" class="c-select-title">{{ title }}<image src="../../images/select.png" /></view>
-  <picker-view wx:if="{{ showSelect }}" class="c-select-panel">
+  <view bindtap="tapToggleSelect" class="c-select-title {{ selectedTitle ? 'c-selected-title' : '' }}">{{ selectedTitle || title }}<image src="../../images/select.png" animation="{{ animationStyle }}" /></view>
+  <!-- <picker-view wx:if="{{ showSelect }}" class="c-select-panel">
     <picker-view-column>
-      <view class="c-select-row" wx:for="{{ options }}" wx:key="{{index}}">{{ item }}</view>
+      <view class="c-select-row" wx:for="{{ options }}" wx:key="{{index}}">{{ item.title }}</view>
     </picker-view-column>
-  </picker-view>
-  <!-- <view class="c-select-panel">
-    <view class="c-select-row" wx:for="{{ options }}" wx:key="{{index}}">{{ item }}</view>
-  </view> -->
+  </picker-view> -->
+  <view wx:if="{{ showSelect }}" class="c-select-panel">
+    <view
+      class="c-select-row"
+      data-index="{{ index }}"
+      wx:for="{{ options }}"
+      wx:key="{{index}}"
+      bindtap="tapSelect"
+    >{{ item[prop] }}</view>
+  </view>
 </view>
