@@ -28,13 +28,11 @@ Page({
       key: 'PBKBZ-QFXRU-67VVH-2MN4U-FIVRT-QDFOJ'
     });
     this.getUserLocation();
-    this.getBaobeiInfo();
   },
   getUserLocation() {
     const that = this;
     wx.getSetting({
       success: (res) => {
-        console.log(JSON.stringify(res))
         // res.authSetting['scope.userLocation'] == undefined    表示 初始化进入该页面
         // res.authSetting['scope.userLocation'] == false    表示 非初始化进入该页面,且未授权
         // res.authSetting['scope.userLocation'] == true    表示 地理位置授权
@@ -57,15 +55,11 @@ Page({
     wx.getLocation({
       type: 'wgs84',
       success: function (res) {
-        console.log(JSON.stringify(res))
-        var latitude = res.latitude
-        var longitude = res.longitude
-        var speed = res.speed
-        var accuracy = res.accuracy;
+        const latitude = res.latitude;
+        const longitude = res.longitude;
         that.getLocal(latitude, longitude)
       },
       fail: function (res) {
-        console.log('fail' + JSON.stringify(res));
         that.showLocationModal();
       }
     })
@@ -79,19 +73,15 @@ Page({
         longitude: longitude
       },
       success: function (res) {
-        console.log(JSON.stringify(res));
-        let province = res.result.ad_info.province
-        let city = res.result.ad_info.city
-        that.setData({
-          province: province,
-          city: city
+        const city = res.result.ad_info.city;
+        that.getBaobeiInfo(city);
+      },
+      fail: function (err) {
+        wx.showToast({
+          title: '获取城市失败',
+          icon: 'none',
+          duration: 1000
         });
-      },
-      fail: function (res) {
-        console.log(res);
-      },
-      complete: function (res) {
-        // console.log(res);
       }
     });
   },
@@ -134,10 +124,10 @@ Page({
     });
   },
 
-  getBaobeiInfo() {
+  getBaobeiInfo(city) {
     const that = this;
     wx.request({
-      url: baseUrl + '/QueryBaoBeiProList?AreaCode=' + this.data.areaCode,
+      url: baseUrl + '/QueryBaoBeiProList?CityName=' + city,
       success(res) {
         res = res.data;
         if (res.status === 0) {
@@ -190,7 +180,6 @@ Page({
   },
   // 选择报备项目
   handleBaobeiChanged(e) {
-    console.log(e);
     const baobei = e.detail;
     this.setData({
       selectedBaobei: baobei
@@ -219,10 +208,8 @@ Page({
       showDatePicker: false,
       ArrivalTime: e.detail
     });
-    console.log(e);
   },
   handleInput(e) {
-    console.log(e);
     const id = e.target.id;
     const val = e.detail.value;
     this.setData({

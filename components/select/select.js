@@ -36,7 +36,6 @@ Component({
    */
   methods: {
     tapToggleSelect() {
-      console.log(this.data.options);
       if (!this.data.options.length) return;
       this.setData({
         showSelect: !this.data.showSelect
