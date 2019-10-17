@@ -1,8 +1,6 @@
 let QQMapWX = require('../../utils/qqmap-wx-jssdk1.2/qqmap-wx-jssdk.js');
 let qqmapsdk;
 
-// TODO: 重制 -> select 监听到options为空时，选中内容改成空
-
 const baseUrl = 'http://hilldren.oicp.net:31560/api/MainApi'
 Page({
   data: {
@@ -24,9 +22,6 @@ Page({
     ArrivalTime: '', // 预计到访时间, 格式 2019 - 10 - 01
     BaoBeiIdCardNum: '', // 报备人员身份证号
     BaoBeiTel: '' // 报备人员手机号
-    // ProID(string, optional): 报备项目的GUID ,
-    // ArrivalTime(string, optional): 预计到访时间, 格式 2019 - 10 - 01,
-    // QuDaoID(string, optional): 渠道的GUID ,
   },
   onLoad() {
     qqmapsdk = new QQMapWX({
@@ -112,7 +107,7 @@ Page({
             title: '拒绝授权',
             icon: 'none',
             duration: 1000
-          })
+          });
         } else if (res.confirm) {
           wx.openSetting({
             success(dataAu) {
@@ -121,7 +116,7 @@ Page({
                   title: '授权成功',
                   icon: 'none',
                   duration: 1000
-                })
+                });
                 //再次授权，调用wx.getLocation的API
                 that.getLocation();
               } else {
@@ -149,10 +144,20 @@ Page({
           that.setData({
             baobeiList: res.data
           });
+        } else {
+          wx.showToast({
+            title: res.message,
+            icon: 'none',
+            duration: 1000
+          });
         }
       },
       fail(err) {
-
+        wx.showToast({
+          title: '获取报备项目失败',
+          icon: 'none',
+          duration: 1000
+        });
       }
     });
   },
@@ -166,10 +171,20 @@ Page({
           that.setData({
             qudaoList: res.data
           });
+        } else {
+          wx.showToast({
+            title: res.message,
+            icon: 'none',
+            duration: 1000
+          });
         }
       },
       fail() {
-
+        wx.showToast({
+          title: '获取渠道信息失败',
+          icon: 'none',
+          duration: 1000
+        });
       }
     });
   },
@@ -216,8 +231,11 @@ Page({
   },
   tapReset() {
     this.setData({
-      baobeiList: [],
+      allMarketing: false,
+      baobeiList: this.data.baobeiList,
       qudaoList: [],
+      selectedBaobei: {},
+      selectedQudao: {},
       Tel1Prefix3: '', // 用户手机号1前三位
       Tel1Suffix4: '', // 用户手机号1后四位
       Tel2Prefix3: '', // 用户手机号2前三位
@@ -285,27 +303,37 @@ Page({
     });
   },
   requestSubmit(data) {
-    console.log(data);
-    return;
     const that = this;
     wx.request({
       url: baseUrl + '/AddBaoBei',
       method: 'POST',
       data,
-      success() {
-        wx.showModal({
-          title: '报备成功',
-          showCancel: false,
-          success(res) {
-            if (res.confirm) {
-              console.log('用户点击确定');
-              that.tapReset();
+      success(res) {
+        res = res.data;
+        if (res.status === 0) {
+          wx.showModal({
+            title: '报备成功',
+            showCancel: false,
+            success(res) {
+              if (res.confirm) {
+                that.tapReset();
+              }
             }
-          }
-        });
+          });
+        } else {
+          wx.showToast({
+            title: res.message,
+            icon: 'none',
+            duration: 1000
+          });
+        }
       },
       fail() {
-
+        wx.showToast({
+          title: '报备失败',
+          icon: 'none',
+          duration: 1000
+        });
       }
     });
   },

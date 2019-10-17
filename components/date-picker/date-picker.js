@@ -66,28 +66,6 @@ Component({
     value: [0, 0]
   },
 
-  attached: function () { }, // 此处attached的声明会被lifetimes字段中的声明覆盖
-  // ready: function () {
-  //   const now = new Date();
-  //   const year = now.getFullYear();
-  //   const month = now.getMonth() + 1;
-  //   const day = now.getDate();
-  //   const hour = now.getHours();
-  //   const minite = now.getMinutes();
-
-  //   // 计算两年内
-  //   this.setData({
-  //     now
-  //   });
-  // },
-
-  // pageLifetimes: {
-  //   // 组件所在页面的生命周期函数
-  //   show: function () { },
-  //   hide: function () { },
-  //   resize: function () { },
-  // },
-
   /**
    * 组件的方法列表
    */
@@ -99,9 +77,12 @@ Component({
     // 点击确认
     tapConfirm() {
       // 判断是否在现在之前
-      const ymd = this.data.value[0];
-      let hm = this.data.value[1];
-      const timeStr = `${this.data.ymds[ymd]} ${this.data.hms[hm]}`;
+      const ymd = this.data.ymds[this.data.value[0]];
+      let hm = this.data.hms[this.data.value[1]];
+      const arr = hm.split(':');
+      const hour = Number(arr[0]);
+      const min = Number(arr[1]);
+      const timeStr = `${ymd} ${hour}:${min}`;
       // TODO: 分钟数 00:00 -> 不能补零。 否则报错
       const selectedDate = new Date(timeStr).getTime();
       if (selectedDate <= Date.now()) {
@@ -112,8 +93,7 @@ Component({
         });
         return;
       }
-      console.log(selectedDate);
-      this.triggerEvent('confirm', timeStr);
+      this.triggerEvent('confirm', `${ymd} ${hm}`);
     },
     bindChange(e) {
       const val = e.detail.value;
@@ -126,7 +106,6 @@ Component({
       this.setData({
         value: [ymd, hm]
       });
-      console.log(e);
     }
   }
 })

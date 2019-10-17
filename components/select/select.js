@@ -10,7 +10,12 @@ Component({
     },
     options: {
       type: Array,
-      value: []
+      value: [],
+      observer() {
+        this.setData({
+          selectedTitle: ''
+        })
+      }
     },
     prop: {
       type: String,

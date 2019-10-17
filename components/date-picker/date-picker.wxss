@@ -31,7 +31,7 @@
 }
 
 .c-date-picker-header .confirm {
-  color: #c6373c;
+  color: #333;
 }
 
 .c-date-picker-indicator {
