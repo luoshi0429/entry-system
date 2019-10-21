@@ -25,7 +25,7 @@ Page({
   },
   onLoad() {
     qqmapsdk = new QQMapWX({
-      key: 'PBKBZ-QFXRU-67VVH-2MN4U-FIVRT-QDFOJ'
+      key: 'D73BZ-Z4UC4-EK7U5-XY6O5-BB36S-5CFZY'
     });
     this.getUserLocation();
   },
@@ -216,6 +216,9 @@ Page({
       [id]: val
     });
   },
+  checkPhone(num) {
+    return /^1[3456789]\d{9}$/.test(num);
+  },
   tapReset() {
     this.setData({
       allMarketing: false,
@@ -248,6 +251,9 @@ Page({
     }
     if (!BaoBeiTel) {
       error = '请输入报备人员手机号';
+    }
+    if (!this.checkPhone(BaoBeiTel)) {
+      error = '请输入正确的报备手机号';
     }
     // 渠道QuDaoID
     if (!selectedQudao.Guid) {

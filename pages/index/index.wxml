@@ -41,7 +41,7 @@
     </view>
     <view class="form-control">
       <view class="title">报备人员手机号码<text>*</text>：</view>
-      <input bindinput="handleInput" value="{{ BaoBeiTel }}" id="BaoBeiTel" class="input-row" placeholder="请输入报备人员手机号" />
+      <input bindinput="handleInput" value="{{ BaoBeiTel }}" type="number" maxlength="11" id="BaoBeiTel" class="input-row" placeholder="请输入报备人员手机号" />
     </view>
     <view class="form-control" wx:if="{{ allMarketing }}">
       <view class="title">报备人员姓名<text>*</text>：</view>
