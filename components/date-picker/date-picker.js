@@ -70,6 +70,10 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    catchTapContent() {},
+    tapView() {
+      this.triggerEvent('cancel');
+    },
     // 点击取消
     tapCancel() {
       this.triggerEvent('cancel');

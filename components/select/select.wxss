@@ -27,6 +27,14 @@
   top: 11rpx;
 }
 
+.c-select-title.disabled {
+  border-color: #aaa;
+  color: #aaa;
+}
+.c-select-title.disabled image{
+  display: none; 
+}
+
 .c-select-panel {
   position: absolute;
   z-index: 66;

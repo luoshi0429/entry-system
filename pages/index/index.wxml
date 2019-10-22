@@ -1,10 +1,10 @@
 <!--logs.wxml-->
-<view class="container">
+<view class="container" bindtap="tapHomepage">
   <image src="../../images/background.png" class="container-bg" />
   <view class="form">
     <view class="form-control">
       <view class="title">报备项目<text>*</text>：</view>
-      <select title="请选择报备项目" prop="ProName" options="{{ baobeiList }}" bindchange="handleBaobeiChanged"></select>
+      <my-select hideList="{{ hideBaobeiList }}" bind:expand="handleBaobeiExpand" title="请选择报备项目" prop="ProName" options="{{ baobeiList }}" bindchange="handleBaobeiChanged"></my-select>
     </view>
     <view class="form-control">
       <view class="title">用户手机号码1<text>*</text>（必填）：</view>
@@ -37,7 +37,15 @@
           <image src="../../images/selected.png" /><text class="c-radio-circle"></text>全民营销
         </view>
       </view>
-      <select title="请选择报备项目后再选择渠道" prop="QuDaoName" options="{{ qudaoList }}" bindchange="handleQudaoChanged"></select>
+      <my-select
+        setDisabled="{{ allMarketing }}"
+        hideList="{{ hideQudaoList }}"
+        bind:expand="handleQudaoiExpand"
+        title="{{ selectedBaobei.Guid ? '请选择渠道公司' : '请选择报备项目后再选择渠道' }}"
+        prop="QuDaoName"
+        options="{{ qudaoList }}"
+        bindchange="handleQudaoChanged"
+      ></my-select>
     </view>
     <view class="form-control">
       <view class="title">报备人员手机号码<text>*</text>：</view>
@@ -52,7 +60,7 @@
       <input bindinput="handleInput" value="{{ BaoBeiIdCardNum }}" id="BaoBeiIdCardNum" class="input-row" placeholder="请输入报备人员身份证号码" />
     </view>
     <view class="form-control"></view>
-    <view class="tip"><text>说明：</text>报备生效时间为{{ selectedBaobei.Interval || 2 }}小时，请提前报备！报备后有效时间为30天</view>
+    <view class="tip"><text>说明：</text>报备生效时间为{{ selectedBaobei.Interval >= 0 ? selectedBaobei.Interval  : 2 }}小时，请提前报备！报备后有效时间为30天</view>
     <view class="btn submit-btn" bindtap="tapSubmit"><image src="../../images/button.png" /><text>提交</text></view>
     <view class="btn reset-btn" bindtap="tapReset">重制</view>
   </view>

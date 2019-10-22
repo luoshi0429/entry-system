@@ -1,6 +1,6 @@
 <!--components/date-picker/date-picker.wxml-->
-<view class="c-date-picker">
-  <view class="c-date-picker-content">
+<view class="c-date-picker" catchtap="tapView">
+  <view class="c-date-picker-content" catchtap="catchTapContent">
     <view class="c-date-picker-header">
       <text class="cancel" bindtap="tapCancel">取消</text>
       <text class="confirm" bindtap="tapConfirm">确定</text>

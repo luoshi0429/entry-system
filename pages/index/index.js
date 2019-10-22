@@ -4,6 +4,8 @@ let qqmapsdk;
 const baseUrl = 'http://hilldren.oicp.net:31560/api/MainApi'
 Page({
   data: {
+    hideBaobeiList: true,
+    hideQudaoList: true,
     areaCode: '4401',
     province: '',
     city: '',
@@ -131,6 +133,12 @@ Page({
       success(res) {
         res = res.data;
         if (res.status === 0) {
+          // // TODO: test
+          // const test = Object.assign({}, res.data[0]);
+          // test.IsMarketing = false;
+          // test.ProName = '测试项目';
+          // res.data.push(test)
+          // // TODO: test
           that.setData({
             baobeiList: res.data
           });
@@ -182,7 +190,11 @@ Page({
   handleBaobeiChanged(e) {
     const baobei = e.detail;
     this.setData({
-      selectedBaobei: baobei
+      selectedBaobei: baobei,
+      selectedQudao: {},
+      allMarketing: false,
+      SName: '',
+      BaoBeiIdCardNum: '',
     });
     this.getQuDaoInfo(baobei.ProCode);
   },
@@ -243,10 +255,13 @@ Page({
     let error = '';
     if (allMarketing) {
       if (!BaoBeiIdCardNum) {
-        error = '请输入报备人员手机号';
+        error = '请输入报备人员身份证号码';
+      }
+      if (!/(^\d{15}$)|(^\d{17}(\d|X)$)/.test(BaoBeiIdCardNum)) {
+        error = '请输入正确的身份证号码';
       }
       if (!SName) {
-        error = '请输入报备人员报备人员姓名';
+        error = '请输入报备人员姓名';
       }
     }
     if (!BaoBeiTel) {
@@ -256,7 +271,7 @@ Page({
       error = '请输入正确的报备手机号';
     }
     // 渠道QuDaoID
-    if (!selectedQudao.Guid) {
+    if (!allMarketing && !selectedQudao.Guid) {
       error = '请选择渠道公司';
     }
     if (!ArrivalTime) {
@@ -281,6 +296,16 @@ Page({
       });
       return;
     }
+
+    // 判断
+    const other = {};
+    if (allMarketing) {
+      other.SName = SName;
+      other.BaoBeiIdCardNum = BaoBeiIdCardNum; 
+    } else {
+      other.QuDaoID = selectedQudao.Guid;
+    }
+
     this.requestSubmit({
       ProID: selectedBaobei.Guid, // 报备项目的GUID
       Tel1Prefix3, // 用户手机号1前三位
@@ -288,11 +313,12 @@ Page({
       Tel2Prefix3, // 用户手机号2前三位
       Tel2Suffix4, // 用户手机号2后四位
       UName, // 用户姓名
-      SName, // 销售人员姓名
       ArrivalTime, // 预计到访时间, 格式 2019 - 10 - 01
-      QuDaoID: selectedQudao.Guid, // 渠道的GUID
-      BaoBeiIdCardNum, // 报备人员身份证号
-      BaoBeiTel // 报备人员手机号
+      BaoBeiTel, // 报备人员手机号
+      ...other
+      // QuDaoID: selectedQudao.Guid, // 渠道的GUID
+      // SName, // 销售人员姓名
+      // BaoBeiIdCardNum, // 报备人员身份证号
     });
   },
   requestSubmit(data) {
@@ -334,6 +360,25 @@ Page({
   tapAllMarketingRadio() {
     this.setData({
       allMarketing: !this.data.allMarketing
+    });
+  },
+  // 点击界面
+  tapHomepage() {
+    this.setData({
+      hideBaobeiList: true,
+      hideQudaoList: true,
+    });
+  },
+  handleBaobeiExpand(e) {
+    this.setData({
+      hideBaobeiList: !e.detail,
+      hideQudaoList: true
+    });
+  },
+  handleQudaoiExpand(e) {
+    this.setData({
+      hideQudaoList: !e.detail,
+      hideBaobeiList: true
     });
   }
 })
